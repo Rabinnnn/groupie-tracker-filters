@@ -184,21 +184,21 @@
         const requestData = {
             Combinator: "and",
             creation_date: {
-                Type: "range",
-                From: creationDateRange[0],
-                To: creationDateRange[1],
+                type: "range",
+                from: creationDateRange[0],
+                to: creationDateRange[1]
             },
-            first_album_date: {
-                Type: "range",
-                From: firstAlbumDateRange[0],
-                To: firstAlbumDateRange[1],
+            first_album: {
+                type: "range",
+                from: firstAlbumDateRange[0],
+                to: firstAlbumDateRange[1]
             },
-            number_of_members: selectedMembers.length
-                ? { Type: "in", Values: selectedMembers }
+            members: selectedMembers.length
+                ? { type: "in", values: selectedMembers }
                 : {},
             locations_of_concerts: selectedLocation
-                ? { In: [selectedLocation] }
-                : {},
+                ? { in: [selectedLocation] }
+                : {}
         };
 
         console.log("Sending API Request:", requestData);
