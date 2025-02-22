@@ -125,6 +125,103 @@
     });
 
     // Filtering logic will be added here
+    document.addEventListener("DOMContentLoaded", function () {
+    function toggleFilters() {
+        const filterContainer = document.getElementById("filter-container");
+        filterContainer.style.display =
+            filterContainer.style.display === "none" || filterContainer.style.display === ""
+                ? "block"
+                : "none";
+    }
+
+    function getSelectedMembers() {
+        return Array.from(document.querySelectorAll("input[name='members']:checked")).map(
+            (checkbox) => parseInt(checkbox.value)
+        );
+    }
+
+    function getSelectedLocation() {
+        return document.getElementById("search-location").value.trim();
+    }
+
+    // Initialize noUiSlider for creation date
+    // var creationDateSlider = document.getElementById("creation-date-slider");
+    // noUiSlider.create(creationDateSlider, {
+    //     start: [1900, 2023],
+    //     connect: true,
+    //     range: {
+    //         min: 1900,
+    //         max: 2023,
+    //     },
+    // });
+    creationDateSlider.noUiSlider.on("update", function (values) {
+        document.getElementById("creation-value-start").textContent = Math.round(values[0]);
+        document.getElementById("creation-value-end").textContent = Math.round(values[1]);
+    });
+
+    // Initialize noUiSlider for first album date
+    // var firstAlbumDateSlider = document.getElementById("first-album-date-slider");
+    // noUiSlider.create(firstAlbumDateSlider, {
+    //     start: [1900, 2023],
+    //     connect: true,
+    //     range: {
+    //         min: 1900,
+    //         max: 2023,
+    //     },
+    // });
+    firstAlbumDateSlider.noUiSlider.on("update", function (values) {
+        document.getElementById("first-album-value-start").textContent = Math.round(values[0]);
+        document.getElementById("first-album-value-end").textContent = Math.round(values[1]);
+    });
+
+    // Apply filters on button click
+    document.getElementById("apply-filters").addEventListener("click", function () {
+        const creationDateRange = creationDateSlider.noUiSlider.get().map(Number);
+        const firstAlbumDateRange = firstAlbumDateSlider.noUiSlider.get().map(Number);
+        const selectedMembers = getSelectedMembers();
+        const selectedLocation = getSelectedLocation();
+
+        const requestData = {
+            Combinator: "and",
+            CreationDateFilterQuery: {
+                Type: "range",
+                From: creationDateRange[0],
+                To: creationDateRange[1],
+            },
+            FirstAlbumDateFilterQuery: {
+                Type: "range",
+                From: firstAlbumDateRange[0],
+                To: firstAlbumDateRange[1],
+            },
+            NumberOfMembersFilterQuery: selectedMembers.length
+                ? { Type: "in", Values: selectedMembers }
+                : {},
+            LocationsOfConcertsFilterQuery: selectedLocation
+                ? { In: [selectedLocation] }
+                : {},
+        };
+
+        console.log("Sending API Request:", requestData);
+
+        fetch("/api/filter", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Filtered Artists:", data);
+                alert("Filters applied successfully! Check the console for results.");
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("Error applying filters. Check the console.");
+            });
+    });
+});
+
 </script>
 <script src="/static/js/searchbar.js"></script>
 
