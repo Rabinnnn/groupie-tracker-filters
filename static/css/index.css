@@ -365,3 +365,23 @@ input[type="range"]::-moz-range-thumb {
     outline: none; /* Remove outline */
     margin: 0 auto;
 }
+
+#apply-filters {
+    display: block;
+    margin: 20px auto; /* Center the button */
+    background: linear-gradient(
+    to right, #5f9ef8, #8972e4, #f3659d);
+    color: #fff; 
+    border: none;
+    padding: 10px 20px; 
+    font-size: 1.0em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 5px;
+    margin-top: 100px; 
+    z-index: 1; 
+}
+
+#apply-filters:hover {
+    background: linear-gradient(to right, #4c75af, #6f63a0, #9c4668);
+}
