@@ -183,20 +183,20 @@
 
         const requestData = {
             Combinator: "and",
-            CreationDateFilterQuery: {
+            creation_date: {
                 Type: "range",
                 From: creationDateRange[0],
                 To: creationDateRange[1],
             },
-            FirstAlbumDateFilterQuery: {
+            first_album_date: {
                 Type: "range",
                 From: firstAlbumDateRange[0],
                 To: firstAlbumDateRange[1],
             },
-            NumberOfMembersFilterQuery: selectedMembers.length
+            number_of_members: selectedMembers.length
                 ? { Type: "in", Values: selectedMembers }
                 : {},
-            LocationsOfConcertsFilterQuery: selectedLocation
+            locations_of_concerts: selectedLocation
                 ? { In: [selectedLocation] }
                 : {},
         };

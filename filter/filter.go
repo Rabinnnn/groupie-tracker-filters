@@ -134,7 +134,10 @@ func API(w http.ResponseWriter, r *http.Request) {
 
 	// Filter by first album date
 	if requestData.FirstAlbumDateFilterQuery.Type != "" {
+		fmt.Println("Before filtering:", len(AllArtists)) 
 		matchedArtists, err := filterByFirstAlbumDate(AllArtists, requestData.FirstAlbumDateFilterQuery)
+		fmt.Println("After filtering by creation date:", len(matchedArtists))
+
 		if err != nil {
 			makeAPIErrorResponse(w, http.StatusBadRequest, "Invalid JSON for first_album_date query: "+err.Error())
 			return
